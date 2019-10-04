@@ -79,6 +79,12 @@ variable "domain_name" {
   description = "The domain name to use for the API Gateway"
 }
 
+variable "integration_uri" {
+  type        = string
+  default     = ""
+  description = "The URI to proxy requests to" 
+}
+
 variable "aws_region" {
   type        = string
   description = "The AWS Region to operate in" 

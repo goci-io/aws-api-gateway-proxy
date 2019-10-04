@@ -73,6 +73,7 @@ resource "aws_api_gateway_integration" "vpc" {
   connection_id        = aws_api_gateway_vpc_link.link.id
   connection_type      = "VPC_LINK"
   type                 = "HTTP_PROXY"
+  uri                  = var.integration_uri
   http_method          = "ANY"
   passthrough_behavior = "WHEN_NO_MATCH"
 }
