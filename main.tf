@@ -45,15 +45,6 @@ resource "aws_api_gateway_rest_api" "main" {
   }
 }
 
-resource "aws_api_gateway_domain_name" "domain" {
-  domain_name              = var.domain_name
-  regional_certificate_arn = local.certificate_arn
-
-  endpoint_configuration {
-    types = ["REGIONAL"]
-  }
-}
-
 resource "aws_api_gateway_resource" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.main.id
   parent_id   = aws_api_gateway_rest_api.main.root_resource_id
@@ -84,4 +75,25 @@ resource "aws_api_gateway_deployment" "deployment" {
   depends_on  = [aws_api_gateway_method.proxy]
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = var.stage
+}
+
+resource "aws_api_gateway_domain_name" "domain" {
+  domain_name              = var.domain_name
+  regional_certificate_arn = local.certificate_arn
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+}
+
+module "apigw_record" {
+  source       = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
+  hosted_zone  = local.hosted_zone
+  records      = [
+    {
+      name    = "api"
+      alias   = aws_lb.nlb.dns_name
+      zone_id = aws_lb.nlb.zone_id
+    }
+  ]
 }

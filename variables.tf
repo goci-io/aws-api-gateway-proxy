@@ -44,6 +44,12 @@ variable "tf_bucket" {
   description = "The Bucket name to load remote state from"
 }
 
+variable "dns_module_state" {
+  type        = string
+  default     = ""
+  description = "The key or path to the state to source hosted zone information from. It must expose a hosted_zone"
+}
+
 variable "acm_module_state" {
   type        = string
   default     = ""
@@ -77,6 +83,12 @@ variable "description" {
 variable "domain_name" {
   type        = string
   description = "The domain name to use for the API Gateway"
+}
+
+variable "hosted_zone" {
+  type        = string
+  default     = ""
+  description = "The HostedZone to create the alias record in"
 }
 
 variable "integration_uri" {
