@@ -92,12 +92,6 @@ variable "hosted_zone" {
   description = "The HostedZone to create the alias record in. Must be set if dns_module_state is empty"
 }
 
-variable "integration_uri" {
-  type        = string
-  default     = ""
-  description = "The URI to proxy requests to" 
-}
-
 variable "aws_region" {
   type        = string
   description = "The AWS Region to operate in" 
