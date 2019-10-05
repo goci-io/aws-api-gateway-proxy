@@ -82,13 +82,14 @@ variable "description" {
 
 variable "domain_name" {
   type        = string
+  default     = ""
   description = "The domain name to use for the API Gateway"
 }
 
 variable "hosted_zone" {
   type        = string
   default     = ""
-  description = "The HostedZone to create the alias record in"
+  description = "The HostedZone to create the alias record in. Must be set if dns_module_state is empty"
 }
 
 variable "integration_uri" {

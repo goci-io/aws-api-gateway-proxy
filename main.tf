@@ -10,6 +10,7 @@ module "label" {
 }
 
 locals {
+  domain_name       = var.domain_name == "" ? format("%s.%s", var.name, local.hosted_zone) : var.domain_name
   apigw_description = var.description == "" ? format("API for %s/%s in %s", var.name, var.stage, var.region) : var.description
 }
 
@@ -78,7 +79,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 }
 
 resource "aws_api_gateway_domain_name" "domain" {
-  domain_name              = var.domain_name
+  domain_name              = local.domain_name
   regional_certificate_arn = local.certificate_arn
 
   endpoint_configuration {
@@ -91,7 +92,7 @@ module "apigw_record" {
   hosted_zone  = local.hosted_zone
   records      = [
     {
-      name    = "api"
+      name    = var.name
       alias   = aws_lb.nlb.dns_name
       zone_id = aws_lb.nlb.zone_id
     }
