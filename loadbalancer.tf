@@ -16,12 +16,11 @@ resource "aws_lb" "nlb" {
 }
 
 resource "aws_lb_target_group" "target" {
-  name                 = module.label.id
-  tags                 = module.label.tags
-  port                 = 443
-  protocol             = "TLS"
-  vpc_id               = local.vpc_id
-  deregistration_delay = 120
+  name     = module.label.id
+  tags     = module.label.tags
+  port     = 443
+  protocol = "TLS"
+  vpc_id   = local.vpc_id
 
   health_check {
     interval = 30
