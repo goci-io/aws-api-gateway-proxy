@@ -24,7 +24,6 @@ resource "aws_lb_target_group" "target" {
   deregistration_delay = 120
 
   health_check {
-    healthy_threshold   = 2
     interval            = 30
     path                = var.health_endpoint
     protocol            = "HTTP"
@@ -50,7 +49,7 @@ resource "aws_lb_listener" "forward" {
 
 resource "aws_lb_listener" "https_redirect" {
   load_balancer_arn = aws_lb.nlb.arn
-  protocol          = "HTTP"
+  protocol          = "TCP"
   port              = 80
 
   default_action {
