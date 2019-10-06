@@ -16,11 +16,11 @@ resource "aws_lb" "nlb" {
 }
 
 resource "aws_lb_target_group" "target" {
-  name_prefix = module.label.id
-  tags        = module.label.tags
-  port        = 443
-  protocol    = "TLS"
-  vpc_id      = local.vpc_id
+  name     = module.label.id
+  tags     = module.label.tags
+  port     = 443
+  protocol = "TLS"
+  vpc_id   = local.vpc_id
 
   health_check {
     enabled  = true
@@ -31,10 +31,6 @@ resource "aws_lb_target_group" "target" {
   stickiness {
     enabled = false
     type    = "lb_cookie"
-  }
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 
