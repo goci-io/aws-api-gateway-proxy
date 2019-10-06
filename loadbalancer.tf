@@ -23,8 +23,8 @@ resource "aws_lb_target_group" "target" {
   vpc_id   = local.vpc_id
 
   health_check {
+    enabled  = true
     interval = 30
-    protocol = "TCP"
   }
 
   stickiness {
