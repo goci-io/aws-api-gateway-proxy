@@ -93,9 +93,9 @@ module "apigw_record" {
   hosted_zone  = local.hosted_zone
   records      = [
     {
-      name    = var.name
-      alias   = aws_lb.nlb.dns_name
-      zone_id = aws_lb.nlb.zone_id
+      name       = var.name
+      alias      = aws_lb.nlb.dns_name
+      alias_zone = aws_lb.nlb.zone_id
     }
   ]
 }
