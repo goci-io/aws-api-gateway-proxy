@@ -14,6 +14,10 @@ locals {
   apigw_description = var.description == "" ? format("API for %s/%s in %s", var.name, var.stage, var.region) : var.description
 }
 
+data "aws_route53_zone" "zone" {
+  name = var.hosted_zone
+}
+
 resource "aws_api_gateway_vpc_link" "link" {
   name        = module.label.id
   target_arns = [aws_lb.nlb.arn]
@@ -77,13 +81,13 @@ resource "aws_api_gateway_domain_name" "domain" {
 }
 
 module "apigw_record" {
-  source       = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
-  hosted_zone  = local.hosted_zone
-  records      = [
+  source        = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
+  hosted_zone   = local.hosted_zone
+  alias_records = [
     {
       name       = var.name
-      alias      = aws_lb.nlb.dns_name
-      alias_zone = aws_lb.nlb.zone_id
+      alias      = aws_api_gateway_domain_name.domain.cloudfront_domain_name
+      alias_zone = aws_api_gateway_domain_name.domain.cloudfront_zone_id
     }
   ]
 }
