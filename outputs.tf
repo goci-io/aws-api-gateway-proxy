@@ -5,3 +5,7 @@ output "api_id" {
 output "loadbalancer_name" {
   value = aws_lb.nlb.name
 }
+
+output "loadbalancer_target_arn" {
+  value = aws_lb_target_group.target.arn
+}
