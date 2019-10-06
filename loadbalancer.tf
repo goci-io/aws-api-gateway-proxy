@@ -46,19 +46,3 @@ resource "aws_lb_listener" "forward" {
     type             = "forward"
   }
 }
-
-resource "aws_lb_listener" "https_redirect" {
-  load_balancer_arn = aws_lb.nlb.arn
-  protocol          = "TCP"
-  port              = 80
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
