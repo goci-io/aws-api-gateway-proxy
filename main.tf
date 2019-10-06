@@ -82,8 +82,8 @@ module "apigw_record" {
   alias_records = [
     {
       name       = var.name
-      alias      = aws_api_gateway_domain_name.domain.cloudfront_domain_name
-      alias_zone = aws_api_gateway_domain_name.domain.cloudfront_zone_id
+      alias      = aws_api_gateway_domain_name.domain.regional_domain_name
+      alias_zone = aws_api_gateway_domain_name.domain.regional_zone_id
     }
   ]
 }
