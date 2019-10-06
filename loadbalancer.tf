@@ -22,12 +22,6 @@ resource "aws_lb_target_group" "target" {
   protocol = "TLS"
   vpc_id   = local.vpc_id
 
-  health_check {
-    enabled  = true
-    interval = 30
-    protocol = "TCP"
-  }
-
   stickiness {
     enabled = false
     type    = "lb_cookie"
