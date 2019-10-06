@@ -65,7 +65,7 @@ variable "certificate_arn" {
 variable "vpc_module_state" {
   type        = string
   default     = ""
-  description = "The key or path to the state where a VPC module was installed. It must expose a vpc_id and public_ as well as private_subnet_ids"
+  description = "The key or path to the state where a VPC module was installed. It must expose a vpc_id and private_subnet_ids"
 }
 
 variable "subnet_ids" {

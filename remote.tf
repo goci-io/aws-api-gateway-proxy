@@ -1,6 +1,7 @@
 locals {
   hosted_zone       = var.dns_module_state == "" ? var.hosted_zone : data.terraform_remote_state.acm[0].outputs.hosted_zone
   certificate_arn   = var.acm_module_state == "" ? var.certificate_arn : data.terraform_remote_state.acm[0].outputs.certificate_arn
+  vpc_id            = var.vpc_module_state == "" ? var.vpc_id : data.terraform_remote_state.vpc[0].outputs.vpc_id
   subnet_ids        = var.vpc_module_state == "" ? var.subnet_ids : concat(var.subnet_ids, data.terraform_remote_state.vpc[0].outputs.private_subnet_ids)
 }
 
