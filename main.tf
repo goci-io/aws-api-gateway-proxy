@@ -14,22 +14,6 @@ locals {
   apigw_description = var.description == "" ? format("API for %s/%s in %s", var.name, var.stage, var.region) : var.description
 }
 
-resource "aws_lb" "nlb" {
-  name                             = module.label.id
-  tags                             = module.label.tags
-  load_balancer_type               = "network"
-  internal                         = true
-  enable_cross_zone_load_balancing = true
-
-  dynamic "subnet_mapping" {
-    for_each = local.subnet_ids
-
-    content {
-      subnet_id = subnet_mapping.value
-    }
-  }
-}
-
 resource "aws_api_gateway_vpc_link" "link" {
   name        = module.label.id
   target_arns = [aws_lb.nlb.arn]
@@ -68,8 +52,8 @@ resource "aws_api_gateway_integration" "vpc" {
   resource_id             = aws_api_gateway_resource.proxy.id
   connection_id           = aws_api_gateway_vpc_link.link.id
   uri                     = format("https://%s/{proxy}", aws_lb.nlb.dns_name)
-  cache_key_parameters    = ["method.request.path.proxy"]
   request_parameters      = { "integration.request.path.proxy" = "method.request.path.proxy" }
+  cache_key_parameters    = ["method.request.path.proxy"]
   integration_http_method = "ANY"
   http_method             = "ANY"
   connection_type         = "VPC_LINK"
