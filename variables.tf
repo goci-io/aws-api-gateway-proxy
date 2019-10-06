@@ -71,7 +71,7 @@ variable "vpc_module_state" {
 variable "vpc_id" {
   type        = string
   default     = ""
-  description = "VPC ID to use for the target group if vpc_module_state is not set."
+  description = "VPC ID to use for the target group if vpc_module_state is not set." 
 }
 
 variable "subnet_ids" {
@@ -98,9 +98,15 @@ variable "hosted_zone" {
   description = "The HostedZone to create the alias record in. Must be set if dns_module_state is empty"
 }
 
+variable "health_endpoint" {
+  type        = string
+  default     = "/healthz"
+  description = "Health path to use to check health of the target group"
+}
+
 variable "aws_region" {
   type        = string
-  description = "The AWS Region to operate in"
+  description = "The AWS Region to operate in" 
 }
 
 variable "aws_assume_role_arn" {
