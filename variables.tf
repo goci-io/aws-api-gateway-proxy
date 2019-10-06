@@ -68,6 +68,12 @@ variable "vpc_module_state" {
   description = "The key or path to the state where a VPC module was installed. It must expose a vpc_id and private_subnet_ids"
 }
 
+variable "vpc_id" {
+  type        = string
+  default     = ""
+  description = "VPC ID to use for the target group if vpc_module_state is not set." 
+}
+
 variable "subnet_ids" {
   type        = list(string)
   default     = []
