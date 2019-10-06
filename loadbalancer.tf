@@ -29,6 +29,11 @@ resource "aws_lb_target_group" "target" {
     path                = var.health_endpoint
     protocol            = "TCP"
   }
+  
+  stickiness {
+    enabled = false
+    type    = "lb_cookie"
+  }
 }
 
 resource "aws_lb_listener" "forward" {
