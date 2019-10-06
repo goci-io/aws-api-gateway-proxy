@@ -14,10 +14,6 @@ locals {
   apigw_description = var.description == "" ? format("API for %s/%s in %s", var.name, var.stage, var.region) : var.description
 }
 
-data "aws_route53_zone" "zone" {
-  name = local.hosted_zone
-}
-
 resource "aws_api_gateway_vpc_link" "link" {
   name        = module.label.id
   target_arns = [aws_lb.nlb.arn]
