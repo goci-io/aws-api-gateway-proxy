@@ -24,10 +24,10 @@ resource "aws_lb_target_group" "target" {
   deregistration_delay = 120
 
   health_check {
-    interval            = 30
-    protocol            = "TCP"
+    interval = 30
+    protocol = "TCP"
   }
-  
+
   stickiness {
     enabled = false
     type    = "lb_cookie"

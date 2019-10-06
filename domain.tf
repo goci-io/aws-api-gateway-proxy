@@ -9,8 +9,8 @@ resource "aws_api_gateway_domain_name" "domain" {
 }
 
 module "apigw_record" {
-  source        = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
-  hosted_zone   = local.hosted_zone
+  source      = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
+  hosted_zone = local.hosted_zone
   alias_records = [
     {
       name       = var.name
