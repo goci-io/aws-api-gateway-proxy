@@ -15,7 +15,7 @@ locals {
 }
 
 data "aws_route53_zone" "zone" {
-  name = var.hosted_zone
+  name = local.hosted_zone
 }
 
 resource "aws_api_gateway_vpc_link" "link" {
