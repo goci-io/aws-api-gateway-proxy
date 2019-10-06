@@ -65,6 +65,7 @@ resource "aws_api_gateway_integration" "vpc" {
   connection_id           = aws_api_gateway_vpc_link.link.id
   uri                     = aws_lb.nlb.dns_name
   cache_key_parameters    = ["method.request.path.proxy"]
+  request_parameters      = { "integration.request.path.proxy" = "method.request.path.proxy" }
   integration_http_method = "ANY"
   http_method             = "ANY"
   connection_type         = "VPC_LINK"
