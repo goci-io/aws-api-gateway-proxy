@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "target" {
     healthy_threshold   = 2
     interval            = 30
     path                = var.health_endpoint
-    protocol            = "TCP"
+    protocol            = "HTTP"
   }
   
   stickiness {
