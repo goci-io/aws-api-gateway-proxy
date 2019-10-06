@@ -18,8 +18,8 @@ resource "aws_lb" "nlb" {
 resource "aws_lb_target_group" "target" {
   name                 = module.label.id
   tags                 = module.label.tags
-  port                 = 80
-  protocol             = "TCP"
+  port                 = 443
+  protocol             = "TLS"
   vpc_id               = local.vpc_id
   deregistration_delay = 120
 
@@ -38,7 +38,7 @@ resource "aws_lb_target_group" "target" {
 resource "aws_lb_listener" "forward" {
   load_balancer_arn = aws_lb.nlb.arn
   certificate_arn   = local.certificate_arn
-  protocol          = "TCP"
+  protocol          = "TLS"
   port              = 443
 
   default_action {
