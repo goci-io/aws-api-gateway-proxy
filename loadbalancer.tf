@@ -18,9 +18,17 @@ resource "aws_lb" "nlb" {
 resource "aws_lb_target_group" "target" {
   name     = module.label.id
   tags     = module.label.tags
-  port     = 443
-  protocol = "TLS"
   vpc_id   = local.vpc_id
+  protocol = "TCP"
+  port     = 80
+
+  health_check {
+    enabled  = true
+    interval = 30
+    protocol = "HTTP"
+    matcher  = "200-299"
+    path     = var.health_endpoint
+  }
 
   stickiness {
     enabled = false
