@@ -61,6 +61,19 @@ resource "aws_api_gateway_integration" "vpc" {
   passthrough_behavior    = "WHEN_NO_MATCH"
 }
 
+resource "aws_cloudwatch_log_group" "stage_logs" {
+  name              = module.label.id
+  tags              = module.label.tags
+  retention_in_days = 14
+}
+
+resource "aws_api_gateway_stage" "test" {
+  depends_on    = [aws_cloudwatch_log_group.stage_logs]
+  stage_name    = var.stage
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  deployment_id = aws_api_gateway_deployment.deployment.id
+}
+
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on  = [aws_api_gateway_integration.vpc]
   rest_api_id = aws_api_gateway_rest_api.main.id
