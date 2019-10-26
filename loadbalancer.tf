@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "target" {
 
   health_check {
     enabled  = true
-    interval = 30
+    interval = 15
     protocol = "HTTP"
     path     = var.health_endpoint
   }
