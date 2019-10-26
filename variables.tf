@@ -92,10 +92,10 @@ variable "domain_name" {
   description = "The domain name to use for the API Gateway"
 }
 
-variable "hosted_zone" {
+variable "domain_name" {
   type        = string
   default     = ""
-  description = "The HostedZone to create the alias record in. Must be set if dns_module_state is empty"
+  description = "The hosted zone name to create the alias record in. Must be set if dns_module_state is empty"
 }
 
 variable "health_endpoint" {
