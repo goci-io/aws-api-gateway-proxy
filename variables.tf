@@ -89,12 +89,6 @@ variable "description" {
 variable "domain_name" {
   type        = string
   default     = ""
-  description = "The domain name to use for the API Gateway"
-}
-
-variable "domain_name" {
-  type        = string
-  default     = ""
   description = "The hosted zone name to create the alias record in. Must be set if dns_module_state is empty"
 }
 
