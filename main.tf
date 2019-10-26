@@ -62,7 +62,7 @@ resource "aws_api_gateway_integration" "vpc" {
 }
 
 resource "aws_cloudwatch_log_group" "stage_logs" {
-  name              = format("PI-Gateway-Execution-Logs_%s/%s", aws_api_gateway_rest_api.main.id, var.stage)
+  name              = format("API-Gateway-Execution-Logs_%s/%s", aws_api_gateway_rest_api.main.id, var.stage)
   tags              = module.label.tags
   retention_in_days = 14
 }
