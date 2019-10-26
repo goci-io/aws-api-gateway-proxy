@@ -38,6 +38,7 @@ resource "aws_lb_target_group" "target" {
 resource "aws_lb_listener" "forward" {
   load_balancer_arn = aws_lb.nlb.arn
   certificate_arn   = local.certificate_arn
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   protocol          = "TLS"
   port              = 443
 
