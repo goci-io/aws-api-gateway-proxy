@@ -35,14 +35,15 @@ resource "aws_lb_target_group" "target" {
   name     = module.label.id
   tags     = module.label.tags
   vpc_id   = local.vpc_id
-  protocol = upper(local.target_protocol)
   port     = var.target_port
+  protocol = upper(local.target_protocol)
 
   health_check {
     enabled  = true
     interval = 10
-    protocol = "TCP"
+    protocol = upper(var.health_protocol == "" ? local.target_scheme : var.health_protocol)
     port     = local.health_port
+    path     = var.health_endpoint
   }
 
   stickiness {
@@ -66,7 +67,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "http" {
-  count             = var.enable_nlb_http_listener && !var.enable_nlb_https_listener ? 1 : 0
+  count             = var.enable_nlb_http_listener ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   protocol          = "TCP"
   port              = 80

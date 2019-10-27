@@ -104,6 +104,12 @@ variable "health_endpoint" {
   description = "Health path to use to check health of the target group"
 }
 
+variable "health_protocol" {
+  type        = string
+  default     = ""
+  description = "Health protocol to use (http, tcp, tls), defaults to target scheme"
+}
+
 variable "health_port" {
   type        = number
   default     = 0
