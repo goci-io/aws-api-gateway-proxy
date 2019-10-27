@@ -93,7 +93,7 @@ variable "domain_name" {
 }
 
 variable "target_port" {
-  type        = numer
+  type        = number
   default     = 8080
   description = "Port to route traffic to on the instance" 
 }
