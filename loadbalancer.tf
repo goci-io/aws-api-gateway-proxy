@@ -43,7 +43,6 @@ resource "aws_lb_target_group" "target" {
     interval = 10
     protocol = "TCP"
     port     = local.health_port
-    path     = var.health_endpoint
   }
 
   stickiness {
