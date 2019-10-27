@@ -54,8 +54,9 @@ resource "aws_api_gateway_method_settings" "proxy" {
   method_path = "*/*"
 
   settings {
-    metrics_enabled = true
-    logging_level   = "ERROR"
+    metrics_enabled    = true
+    data_trace_enabled = true
+    logging_level      = "ERROR"
   }
 }
 
