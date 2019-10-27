@@ -1,6 +1,8 @@
 
 locals {
-  health_port = var.health_port == 0 ? var.target_port : var.health_port
+  health_port     = var.health_port == 0 ? var.target_port : var.health_port
+  target_scheme   = var.enable_nlb_https_listener ? "https" : "http"
+  target_protocol = var.enable_nlb_https_listener ? "tls" : "tcp"
 }
 
 resource "aws_eip" "inbound_ips" {
@@ -33,13 +35,13 @@ resource "aws_lb_target_group" "target" {
   name     = module.label.id
   tags     = module.label.tags
   vpc_id   = local.vpc_id
-  protocol = "TCP"
+  protocol = upper(local.target_protocol)
   port     = var.target_port
 
   health_check {
     enabled  = true
     interval = 10
-    protocol = "HTTP"
+    protocol = upper(local.target.scheme)
     port     = local.health_port
     path     = var.health_endpoint
   }
@@ -65,7 +67,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "http" {
-  count             = var.enable_nlb_http_listener ? 1 : 0
+  count             = var.enable_nlb_http_listener && !var.enable_nlb_https_listener ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   protocol          = "TCP"
   port              = 80
