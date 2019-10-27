@@ -41,7 +41,7 @@ resource "aws_lb_target_group" "target" {
   health_check {
     enabled  = true
     interval = 10
-    protocol = upper(local.target.scheme)
+    protocol = upper(local.target_scheme)
     port     = local.health_port
     path     = var.health_endpoint
   }
