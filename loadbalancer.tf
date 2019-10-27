@@ -1,4 +1,9 @@
 
+resource "aws_eip" "inbound_ips" {
+  count = var.allocate_public_ips ? length(local.subnet_ids) : 0
+  tags  = module.label.tags
+}
+
 resource "aws_lb" "nlb" {
   name                             = module.label.id
   tags                             = module.label.tags
@@ -10,8 +15,13 @@ resource "aws_lb" "nlb" {
     for_each = local.subnet_ids
 
     content {
-      subnet_id = subnet_mapping.value
+      subnet_id     = subnet_mapping.value
+      allocation_id = var.allocate_public_ips ? element(aws_eip.inbound_ips.*.id, subnet_mapping.key) : ""
     }
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -26,6 +36,7 @@ resource "aws_lb_target_group" "target" {
     enabled  = true
     interval = 10
     protocol = "HTTP"
+    port     = var.health_port
     path     = var.health_endpoint
   }
 

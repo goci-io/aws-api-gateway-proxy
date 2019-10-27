@@ -98,6 +98,18 @@ variable "health_endpoint" {
   description = "Health path to use to check health of the target group"
 }
 
+variable "health_port" {
+  type        = number
+  default     = 8080
+  description = "Port to send health requests to" 
+}
+
+variable "allocate_public_ips" {
+  type        = bool
+  default     = false
+  description = "If true elastic IPs are attached to the load balancer. Useful for VPN routing for example"
+}
+
 variable "aws_region" {
   type        = string
   description = "The AWS Region to operate in" 
