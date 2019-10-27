@@ -48,6 +48,17 @@ resource "aws_api_gateway_method" "proxy" {
   }
 }
 
+resource "aws_api_gateway_method_settings" "proxy" {
+  rest_api_id = aws_api_gateway_rest_api.main.id
+  stage_name  = aws_api_gateway_stage.stage.stage_name
+  method_path = "${aws_api_gateway_resource.proxy.path_part}/${aws_api_gateway_method.proxy.http_method}"
+
+  settings {
+    metrics_enabled = true
+    logging_level   = "ERROR"
+  }
+}
+
 resource "aws_api_gateway_integration" "vpc" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.proxy.id
@@ -68,16 +79,12 @@ resource "aws_cloudwatch_log_group" "stage_logs" {
   retention_in_days = 14
 }
 
-resource "aws_api_gateway_stage" "test" {
+resource "aws_api_gateway_stage" "stage" {
   stage_name    = var.stage
+  tags          = module.label.tags
   description   = local.apigw_description
   rest_api_id   = aws_api_gateway_rest_api.main.id
   deployment_id = aws_api_gateway_deployment.deployment.id
-
-  access_log_settings {
-    format          = "JSON"
-    destination_arn = aws_cloudwatch_log_group.stage_logs.arn
-  }
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
