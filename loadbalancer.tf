@@ -1,4 +1,8 @@
 
+locals {
+  health_port = var.health_port == 0 ? var.target_port : var.health_port
+}
+
 resource "aws_eip" "inbound_ips" {
   count = var.allocate_public_ips ? length(local.subnet_ids) : 0
   tags  = module.label.tags
@@ -30,13 +34,13 @@ resource "aws_lb_target_group" "target" {
   tags     = module.label.tags
   vpc_id   = local.vpc_id
   protocol = "TCP"
-  port     = 80
+  port     = var.target_port
 
   health_check {
     enabled  = true
     interval = 10
     protocol = "HTTP"
-    port     = var.health_port
+    port     = local.health_port
     path     = var.health_endpoint
   }
 
@@ -46,12 +50,25 @@ resource "aws_lb_target_group" "target" {
   }
 }
 
-resource "aws_lb_listener" "forward" {
+resource "aws_lb_listener" "https" {
+  count             = var.enable_nlb_https_listener ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   certificate_arn   = local.certificate_arn
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
   protocol          = "TLS"
   port              = 443
+
+  default_action {
+    target_group_arn = aws_lb_target_group.target.arn
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_listener" "http" {
+  count             = var.enable_nlb_http_listener ? 1 : 0
+  load_balancer_arn = aws_lb.nlb.arn
+  protocol          = "TLS"
+  port              = 80
 
   default_action {
     target_group_arn = aws_lb_target_group.target.arn

@@ -92,6 +92,12 @@ variable "domain_name" {
   description = "The hosted zone name to create the alias record in. Must be set if dns_module_state is empty"
 }
 
+variable "target_port" {
+  type        = numer
+  default     = 8080
+  description = "Port to route traffic to on the instance" 
+}
+
 variable "health_endpoint" {
   type        = string
   default     = "/healthz"
@@ -100,14 +106,26 @@ variable "health_endpoint" {
 
 variable "health_port" {
   type        = number
-  default     = 8080
-  description = "Port to send health requests to" 
+  default     = 0
+  description = "Port to send health requests to, defaults to target_port" 
 }
 
 variable "allocate_public_ips" {
   type        = bool
   default     = false
   description = "If true elastic IPs are attached to the load balancer. Useful for VPN routing for example"
+}
+
+variable "enable_nlb_https_listener" {
+  type        = bool
+  default     = false
+  description = "Whether to enable the SSL Listener on the NLB. With private link integration this does not seem to be necessary (and possible due to vpc endpoint url)"
+}
+
+variable "enable_nlb_http_listener" {
+  type        = bool
+  default     = true
+  description = "Whether to enable the HTTP listener on port 80 on the NLB. Useful if a vpc private link is used"
 }
 
 variable "aws_region" {
