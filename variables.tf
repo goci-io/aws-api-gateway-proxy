@@ -119,7 +119,7 @@ variable "allocate_public_ips" {
 variable "enable_nlb_https_listener" {
   type        = bool
   default     = false
-  description = "Whether to enable the SSL Listener on the NLB. With private link integration this does not seem to be necessary (and possible due to vpc endpoint url)"
+  description = "Whether to enable the SSL Listener on the NLB. With private link integration this does not seem to be necessary"
 }
 
 variable "enable_nlb_http_listener" {
