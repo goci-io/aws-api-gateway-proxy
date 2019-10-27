@@ -67,7 +67,7 @@ resource "aws_lb_listener" "https" {
 resource "aws_lb_listener" "http" {
   count             = var.enable_nlb_http_listener ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
-  protocol          = "TLS"
+  protocol          = "TCP"
   port              = 80
 
   default_action {
