@@ -10,6 +10,7 @@ module "label" {
 }
 
 locals {
+  endpoint_protocol = var.enable_nlb_http_listener ? "http" : "https"
   domain_name       = var.domain_name == "" ? format("%s.%s", var.name, local.hosted_zone) : var.domain_name
   apigw_description = var.description == "" ? format("API for %s/%s in %s", var.name, var.stage, var.region) : var.description
 }
@@ -51,7 +52,7 @@ resource "aws_api_gateway_integration" "vpc" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.proxy.id
   connection_id           = aws_api_gateway_vpc_link.link.id
-  uri                     = format("https://%s/{proxy}", aws_lb.nlb.dns_name)
+  uri                     = format("%s://%s/{proxy}", local.endpoint_protocol, aws_lb.nlb.dns_name)
   request_parameters      = { "integration.request.path.proxy" = "method.request.path.proxy" }
   cache_key_parameters    = ["method.request.path.proxy"]
   integration_http_method = "ANY"
@@ -68,11 +69,15 @@ resource "aws_cloudwatch_log_group" "stage_logs" {
 }
 
 resource "aws_api_gateway_stage" "test" {
-  depends_on    = [aws_cloudwatch_log_group.stage_logs]
   stage_name    = var.stage
   description   = local.apigw_description
   rest_api_id   = aws_api_gateway_rest_api.main.id
   deployment_id = aws_api_gateway_deployment.deployment.id
+
+  access_log_settings {
+    format          = "JSON"
+    destination_arn = aws_cloudwatch_log_group.stage_logs.arn
+  }
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
