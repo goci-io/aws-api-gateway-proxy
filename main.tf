@@ -53,6 +53,12 @@ resource "aws_api_gateway_method_settings" "proxy" {
   }
 }
 
+resource "aws_api_gateway_vpc_link" "link" {
+  name        = module.label.id
+  target_arns = [aws_lb.nlb.arn]
+  description = format("VPC Link: %s", local.apigw_description)
+}
+
 resource "aws_api_gateway_integration" "vpc" {
   rest_api_id             = aws_api_gateway_rest_api.main.id
   resource_id             = aws_api_gateway_resource.proxy.id
