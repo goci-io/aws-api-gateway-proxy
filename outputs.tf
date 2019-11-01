@@ -15,7 +15,7 @@ output "acme_certificate_arn" {
 }
 
 output "acm_private_key" {
-  value     = module.letsencrypt.private_key
+  value     = module.letsencrypt.certificate_key
   sensitive = true
 }
 
