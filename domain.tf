@@ -1,14 +1,15 @@
 
 module "letsencrypt" {
-  source            = "git::https://github.com/goci-io/aws-acm-letsencrypt.git?ref=master"
-  namespace         = var.namespace
-  stage             = var.stage
-  name              = var.name
-  region            = var.region
-  domain_name       = local.domain_name
-  aws_region        = var.aws_region
-  certificate_email = var.letsencrypt_certificate_email
-  enabled           = var.use_letsencrypt_certificate
+  source              = "git::https://github.com/goci-io/aws-acm-letsencrypt.git?ref=master"
+  namespace           = var.namespace
+  stage               = var.stage
+  name                = var.name
+  region              = var.region
+  domain_name         = local.domain_name
+  aws_region          = var.aws_region
+  aws_assume_role_arn = var.aws_assume_role_arn
+  certificate_email   = var.letsencrypt_certificate_email
+  enabled             = var.use_letsencrypt_certificate
 }
 
 resource "aws_api_gateway_domain_name" "domain" {
