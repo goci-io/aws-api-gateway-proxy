@@ -11,7 +11,7 @@ resource "aws_eip" "inbound_ips" {
 }
 
 resource "aws_lb" "nlb" {
-  name                             = module.label.id
+  name_prefix                      = module.label.id
   tags                             = module.label.tags
   load_balancer_type               = "network"
   internal                         = true
