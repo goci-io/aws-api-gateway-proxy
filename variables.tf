@@ -140,6 +140,18 @@ variable "enable_vpce_dns_sync" {
   description = "If SSL is not terminated on API Gateway you will need to sync vpc endpoint dns with a private hosted zone"
 }
 
+variable "use_letsencrypt_certificate" {
+  type        = bool
+  default     = false
+  description = "Automatically generates a new letsencrypt certificate and uploads it to ACM" 
+}
+
+variable "letsencrypt_certificate_email" {
+  type        = string
+  default     = ""
+  description = "Required if using custom letsencrypt certificate" 
+}
+
 variable "aws_region" {
   type        = string
   description = "The AWS Region to operate in" 
