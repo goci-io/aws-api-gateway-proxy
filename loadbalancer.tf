@@ -42,7 +42,7 @@ resource "aws_lb_target_group" "target" {
   health_check {
     enabled  = true
     interval = 10
-    protocol = var.target_scheme
+    protocol = local.target_scheme
     port     = local.health_port
     matcher  = "200-399"
   }
