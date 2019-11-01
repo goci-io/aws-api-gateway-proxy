@@ -1,5 +1,6 @@
 
 locals {
+  name_prefix     = substr(var.name, 0, min(6, length(var.name)))
   health_port     = var.health_port == 0 ? var.target_port : var.health_port
   target_scheme   = var.enable_nlb_https_listener ? "https" : "http"
   target_protocol = var.enable_nlb_https_listener ? "tls" : "tcp"
@@ -11,7 +12,7 @@ resource "aws_eip" "inbound_ips" {
 }
 
 resource "aws_lb" "nlb" {
-  name_prefix                      = substr(var.name, 0, min(6, length(var.name)))
+  name_prefix                      = local.name_prefix
   tags                             = module.label.tags
   load_balancer_type               = "network"
   internal                         = true
@@ -32,11 +33,11 @@ resource "aws_lb" "nlb" {
 }
 
 resource "aws_lb_target_group" "target" {
-  name     = module.label.id
-  tags     = module.label.tags
-  vpc_id   = local.vpc_id
-  port     = var.target_port
-  protocol = upper(local.target_protocol)
+  name_prefix = local.name_prefix
+  tags        = module.label.tags
+  vpc_id      = local.vpc_id
+  port        = var.target_port
+  protocol    = upper(local.target_protocol)
 
   health_check {
     enabled  = true
