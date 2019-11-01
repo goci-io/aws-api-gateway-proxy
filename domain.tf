@@ -9,6 +9,7 @@ module "letsencrypt" {
   aws_region          = var.aws_region
   aws_assume_role_arn = var.aws_assume_role_arn
   external_account    = var.external_account
+  acme_production     = var.letsencrypt_production
   certificate_email   = var.letsencrypt_certificate_email
   enabled             = var.use_letsencrypt_certificate
 }

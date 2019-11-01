@@ -146,6 +146,12 @@ variable "letsencrypt_certificate_email" {
   description = "Required if using custom letsencrypt certificate" 
 }
 
+variable "letsencrypt_production" {
+  type        = bool
+  default     = false
+  description = "Forces letsencrypt production directory. Otherwise only enabled if stage is prod, production or main" 
+}
+
 variable "aws_region" {
   type        = string
   description = "The AWS Region to operate in" 
