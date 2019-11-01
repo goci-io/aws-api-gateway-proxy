@@ -77,7 +77,7 @@ variable "vpc_id" {
 variable "subnet_ids" {
   type        = list(string)
   default     = []
-  description = "Subnet IDs to attach the LoadBalancer to"
+  description = "Subnet IDs to attach the LoadBalancer to (public) if not specified via vpc_module_state and an output named public_subnet_ids"
 }
 
 variable "description" {
@@ -132,6 +132,12 @@ variable "enable_nlb_http_listener" {
   type        = bool
   default     = true
   description = "Whether to enable the HTTP listener on port 80 on the NLB. Useful if a vpc private link is used"
+}
+
+variable "enable_vpce_dns_sync" {
+  type        = bool
+  default     = false 
+  description = "If SSL is not terminated on API Gateway you will need to sync vpc endpoint dns with a private hosted zone"
 }
 
 variable "aws_region" {

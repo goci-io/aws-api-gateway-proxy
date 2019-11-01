@@ -10,6 +10,7 @@ resource "aws_api_gateway_domain_name" "domain" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "domain" {
+  depends_on  = [aws_api_gateway_stage.stage]
   api_id      = aws_api_gateway_rest_api.main.id
   stage_name  = aws_api_gateway_deployment.deployment.stage_name
   domain_name = aws_api_gateway_domain_name.domain.domain_name
@@ -23,6 +24,27 @@ module "apigw_record" {
       name       = var.name
       alias      = aws_api_gateway_domain_name.domain.regional_domain_name
       alias_zone = aws_api_gateway_domain_name.domain.regional_zone_id
+    }
+  ]
+}
+
+data "aws_vpc_endpoint" "endpoint" {
+  count        = var.enable_vpce_dns_sync ? 1 : 0
+  depends_on   = [aws_api_gateway_integration.vpc]
+  vpc_id       = local.vpc_id
+  service_name = "com.amazonaws.${var.aws_region}.execute-api"
+}
+
+module "private_apigw_record" {
+  source          = "git::https://github.com/goci-io/aws-route53-records.git?ref=master"
+  hosted_zone     = local.private_hosted_zone
+  enabled         = var.enable_vpce_dns_sync
+  is_private_zone = true
+  alias_records   = [
+    {
+      name       = var.name
+      alias      = join("", data.aws_vpc_endpoint.endpoint.*.dns_entry.dns_name)
+      alias_zone = join("", data.aws_vpc_endpoint.endpoint.*.dns_entry.hosted_zone_id)
     }
   ]
 }
