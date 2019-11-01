@@ -33,12 +33,12 @@ resource "aws_lb" "nlb" {
 }
 
 resource "aws_lb_target_group" "target" {
-  name_prefix = local.name_prefix
-  tags        = module.label.tags
-  vpc_id      = local.vpc_id
-  port        = var.target_port
-  protocol    = "TCP"
-  target_type = "instance"
+  name_prefix          = local.name_prefix
+  tags                 = module.label.tags
+  vpc_id               = local.vpc_id
+  port                 = var.target_port
+  protocol             = "TCP"
+  target_type          = "instance"
   deregistration_delay = 180  
   proxy_protocol_v2    = true
 
