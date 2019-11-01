@@ -11,7 +11,7 @@ resource "aws_eip" "inbound_ips" {
 }
 
 resource "aws_lb" "nlb" {
-  name_prefix                      = var.name
+  name_prefix                      = substr(var.name, 0, min(6, length(var.name)))
   tags                             = module.label.tags
   load_balancer_type               = "network"
   internal                         = true
@@ -41,9 +41,8 @@ resource "aws_lb_target_group" "target" {
   health_check {
     enabled  = true
     interval = 10
-    protocol = upper(var.health_protocol == "" ? local.target_scheme : var.health_protocol)
+    protocol = "TCP"
     port     = local.health_port
-    path     = var.health_endpoint
   }
 
   stickiness {

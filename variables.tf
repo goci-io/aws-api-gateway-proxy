@@ -98,12 +98,6 @@ variable "target_port" {
   description = "Port to route traffic to on the instance" 
 }
 
-variable "health_endpoint" {
-  type        = string
-  default     = "/healthz"
-  description = "Health path to use to check health of the target group"
-}
-
 variable "health_protocol" {
   type        = string
   default     = ""
