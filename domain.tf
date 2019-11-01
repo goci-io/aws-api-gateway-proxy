@@ -5,7 +5,7 @@ module "letsencrypt" {
   stage             = var.stage
   name              = var.name
   region            = var.region
-  domain            = local.domain_name
+  domain_name       = local.domain_name
   aws_region        = var.aws_region
   certificate_email = var.letsencrypt_certificate_email
   enabled           = var.use_letsencrypt_certificate
