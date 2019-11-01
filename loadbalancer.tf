@@ -38,14 +38,17 @@ resource "aws_lb_target_group" "target" {
   vpc_id      = local.vpc_id
   port        = var.target_port
   protocol    = upper(local.target_protocol)
+  target_type = "instance"
   deregistration_delay = 180  
   proxy_protocol_v2    = true
 
   health_check {
-    enabled  = true
-    interval = 10
-    protocol = "TCP"
-    port     = local.health_port
+    enabled             = true
+    interval            = 10
+    protocol            = "TCP"
+    port                = local.health_port
+    unhealthy_threshold = 3
+    healthy_threshold   = 3
   }
 
   stickiness {
