@@ -43,16 +43,21 @@ resource "aws_lb_target_group" "target" {
     interval = 10
     protocol = "TCP"
     port     = local.health_port
+    matcher  = "200-399"
   }
 
   stickiness {
     enabled = false
     type    = "lb_cookie"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_listener" "https" {
-  count             = var.enable_nlb_https_listener ? 1 : 0
+  count             = local.target_protocol == "tls" ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   certificate_arn   = local.certificate_arn
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
@@ -66,7 +71,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "http" {
-  count             = var.enable_nlb_http_listener ? 1 : 0
+  count             = local.target_protocol == "tcp" ? 1 : 0
   load_balancer_arn = aws_lb.nlb.arn
   protocol          = "TCP"
   port              = 80
