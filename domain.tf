@@ -40,6 +40,7 @@ module "apigw_record" {
   ]
 }
 
+/*
 data "aws_vpc_endpoint" "endpoint" {
   count        = var.enable_vpce_dns_sync ? 1 : 0
   depends_on   = [aws_api_gateway_integration.vpc]
@@ -60,3 +61,4 @@ module "private_apigw_record" {
     }
   ]
 }
+*/
