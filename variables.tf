@@ -157,3 +157,8 @@ variable "aws_assume_role_arn" {
   description = "The role to assume when creating the API Gateway resources"
 }
 
+variable "external_account" {
+  type        = bool
+  default     = false
+  description = "If using a custom ACME certificate and need to verify DNS using a hosted zone in an external account you need to set this to true"
+}
