@@ -4,6 +4,7 @@ module "letsencrypt" {
   namespace           = var.namespace
   stage               = var.stage
   name                = var.name
+  attributes          = ["cert"]
   region              = var.region
   domain_name         = local.domain_name
   aws_region          = var.aws_region
