@@ -37,7 +37,7 @@ resource "aws_lb_target_group" "target" {
   tags                 = module.label.tags
   vpc_id               = local.vpc_id
   port                 = var.target_port
-  protocol             = local.target_protocol
+  protocol             = upper(local.target_protocol)
   target_type          = "instance"
   deregistration_delay = 180  
   proxy_protocol_v2    = true
