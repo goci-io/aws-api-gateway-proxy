@@ -88,11 +88,7 @@ resource "aws_api_gateway_stage" "stage" {
 }
 
 resource "aws_api_gateway_deployment" "deployment" {
-  depends_on  = [
-    aws_api_gateway_integration.vpc, 
-    aws_api_gateway_stage.stage,
-  ]
-  
+  depends_on  = [aws_api_gateway_integration.vpc]
   rest_api_id = aws_api_gateway_rest_api.main.id
   stage_name  = var.stage
 }
