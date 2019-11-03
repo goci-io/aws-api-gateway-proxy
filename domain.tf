@@ -1,6 +1,6 @@
 
 module "letsencrypt" {
-  source              = "git::https://github.com/goci-io/aws-acm-letsencrypt.git?ref=master"
+  source              = "git::https://github.com/goci-io/aws-acm-letsencrypt.git?ref=tags/0.1.0"
   namespace           = var.namespace
   stage               = var.stage
   name                = var.name
