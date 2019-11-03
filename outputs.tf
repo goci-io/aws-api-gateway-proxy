@@ -23,6 +23,11 @@ output "certificate_body" {
   value = module.letsencrypt.certificate_body
 }
 
-output "certificate_chain" {
-  value = module.letsencrypt.certificate_chain
+output "certificate_ca_cert" {
+  value = module.letsencrypt.certificate_ca_cert
+}
+
+output "certificate_ca_key" {
+  value     = module.letsencrypt.certificate_ca_key
+  sensitive = true
 }
